@@ -1,0 +1,66 @@
+{
+  "name": "ren-language",
+  "displayName": "Ren Language Support",
+  "description": "Syntax highlighting and language support for the Ren programming language.",
+  "version": "0.1.1",
+  "publisher": "your-publisher-name",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:ren"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "ren",
+        "aliases": [
+          "Ren",
+          "ren"
+        ],
+        "extensions": [
+          ".re"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "ren",
+        "scopeName": "source.ren",
+        "path": "./syntaxes/ren.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "Ren Language",
+      "properties": {
+        "ren.compiler.path": {
+          "type": "string",
+          "default": "renc",
+          "description": "Path to the Ren compiler executable (renc). Falls back to system PATH if the default is not found."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint": "^8.49.0",
+    "typescript": "^5.2.2",
+    "@vscode/test-electron": "^2.3.4"
+  }
+}
