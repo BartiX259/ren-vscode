@@ -12,6 +12,12 @@ export function activate(context: vscode.ExtensionContext) {
     if (vscode.window.activeTextEditor) {
         updateDiagnostics(vscode.window.activeTextEditor.document);
     }
+    context.subscriptions.push(
+        vscode.workspace.onDidOpenTextDocument(document => {
+            updateDiagnostics(document);
+        })
+    );
+
 
     // Run diagnostics on text change (with debouncing)
     context.subscriptions.push(
@@ -19,29 +25,23 @@ export function activate(context: vscode.ExtensionContext) {
             updateDiagnostics(document);
         })
     );
-    
+
     // Clear diagnostics when a file is closed
     context.subscriptions.push(
         vscode.workspace.onDidCloseTextDocument(document => {
             diagnosticCollection.delete(document.uri);
         })
     );
-
-    context.subscriptions.push(
-    vscode.workspace.onDidOpenTextDocument(document => {
-        updateDiagnostics(document);
-    })
-);
 }
 
 function updateDiagnostics(document: vscode.TextDocument): void {
     const config = vscode.workspace.getConfiguration('ren.compiler');
     // Read the setting for the compiler path. If it's not set, default to 'renc'.
-    const command = config.get<string>('path', 'renc'); 
+    const command = config.get<string>('path', 'renc');
 
     // Use spawn instead of exec for better argument handling and safety
     const args = [document.fileName, '--diagnostics'];
-    
+
     try {
         const child = cp.spawn(command, args, { shell: true });
 
@@ -53,7 +53,7 @@ function updateDiagnostics(document: vscode.TextDocument): void {
         child.on('close', (code) => {
             // Clear old diagnostics for this file
             diagnosticCollection.set(document.uri, []);
-            
+
             if (stderr) {
                 const diagnostics = parseCompilerOutput(stderr);
                 diagnosticCollection.set(document.uri, diagnostics);
@@ -76,7 +76,7 @@ function updateDiagnostics(document: vscode.TextDocument): void {
 function parseCompilerOutput(stderr: string): vscode.Diagnostic[] {
     const diagnostics: vscode.Diagnostic[] = [];
     const regex = /^(.+?):(\d+):(\d+):(\d+):\s*(error|warning):\s*(.*)$/gm;
-    
+
     let match;
     while ((match = regex.exec(stderr)) !== null) {
         const line = parseInt(match[2], 10) - 1;
@@ -89,8 +89,8 @@ function parseCompilerOutput(stderr: string): vscode.Diagnostic[] {
 
         const range = new vscode.Range(line, column, line, column + length);
 
-        const severity = level === 'error' 
-            ? vscode.DiagnosticSeverity.Error 
+        const severity = level === 'error'
+            ? vscode.DiagnosticSeverity.Error
             : vscode.DiagnosticSeverity.Warning;
 
         const diagnostic = new vscode.Diagnostic(range, message, severity);
