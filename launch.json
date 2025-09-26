@@ -11,7 +11,7 @@
       "outFiles": [
         "${workspaceFolder}/out/**/*.js"
       ],
-      "preLaunchTask": "npm: compile" // <-- THIS IS THE LINE TO ADD/MODIFY
+      "preLaunchTask": "npm: compile"
     },
     {
       "name": "Extension Tests",
@@ -24,7 +24,7 @@
       "outFiles": [
         "${workspaceFolder}/out/test/**/*.js"
       ],
-      "preLaunchTask": "npm: compile" // <-- Add it here too for consistency
+      "preLaunchTask": "npm: compile"
     }
   ]
 }

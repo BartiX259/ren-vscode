@@ -40,26 +40,24 @@
     "keywords": {
       "patterns": [
         { "name": "keyword.control.ren", "match": "\\b(if|else|for|in|while|loop|break|return|import|panic)\\b" },
-        { "name": "keyword.control.declaration.ren", "match": "\\b(let|decl|fn|type|enum|pub)\\b" },
-        { "name": "keyword.operator.error-handling.ren", "match": "\\b(err)\\b" }
+        { "name": "keyword.control.declaration.ren", "match": "\\b(let|decl|fn|type|enum|pub)\\b" }
       ]
     },
     "operators": {
       "patterns": [
-        { "name": "keyword.operator.assignment.ren", "match": "=" },
-        { "name": "keyword.operator.heap-alloc.ren", "match": "\\+" },
+        { "name": "keyword.operator.assignment.ren", "match": "[+\\-*\\/]?=" },
+        { "name": "keyword.operator.heap-alloc.ren", "match": "\\+(?=\\[|\")" },
         { "name": "keyword.operator.range.ren", "match": "\\.\\." },
-        { "name": "keyword.operator.error-handling.ren", "match": "(\\?|!)" },
-        { "name": "keyword.operator.pointer.ren", "match": "(&|\\*)" },
-        { "name": "keyword.operator.logical.ren", "match": "\\b(and|or|not)\\b" },
+        { "name": "keyword.operator.error-handling.ren", "match": "[?!]" },
+        { "name": "keyword.operator.pointer.ren", "match": "[&*]" },
         { "name": "keyword.operator.comparison.ren", "match": "==|!=|<=|>=|<|>" },
-        { "name": "keyword.operator.arithmetic.ren", "match": "-|\\*|/" }
+        { "name": "keyword.operator.arithmetic.ren", "match": "[+\\-*\\/]" }
       ]
     },
     "constants-and-literals": {
       "patterns": [
         { "name": "constant.language.ren", "match": "\\b(true|false|none)\\b" },
-        { "name": "constant.numeric.ren", "match": "\\b[0-9]+(\\.[0-9]+)?\\b" },
+        { "name": "constant.numeric.ren", "match": "\\b[0-9]+(?:\\.[0-9]+)?\\b" },
         { "name": "string.quoted.single.ren", "match": "'[^']'" }
       ]
     },
@@ -105,8 +103,8 @@
     "support": {
       "patterns": [
         {
-          "name": "support.function.stdlib.ren",
-          "match": "\\b(print|eprint|input|read|write|read_char|str|to_lowercase|to_uppercase|push|pop|split|join|find|contains|starts_with|ends_with|insert|get|remove|iter|rename|mkdir|rmdir|rm|exists|is_dir|list_dir|parse|assert|to_json|from_json|len|copy|sizeof|panic)\\b(?=\\()"
+          "name": "support.function.builtin.ren",
+          "match": "\\b(len|sp|copy|sizeof|param|istype)\\b(?=\\()"
         },
         {
           "name": "entity.name.function.call.ren",
